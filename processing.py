@@ -3,7 +3,6 @@ from matplotlib import pyplot
 from scipy.fft import irfft , rfft, rfftfreq
 import numpy as np 
   
-
 # load image as pixel array
 image = image.imread('photo1.png')
 # summarize shape of the pixel array
