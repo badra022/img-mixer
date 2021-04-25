@@ -1,93 +1,42 @@
-# # summarize shape of the pixel array
-# print(type(image))
-# print(image.shape)
-# signal=rfft(image)
-# amb=np.abs(signal)
-# ang=np.angle(signal)
-# real=np.real(signal)
-# img=np.imag(signal)
-# print(real)
-# print(type(signal))
-# finalimage=irfft(signal)
-# # display the array of pixels as an image
-# pyplot.imshow(finalimage)
-# pyplot.show()
-
 from matplotlib import image
-from matplotlib import pyplot                                                                              
+from matplotlib import pyplot as plt                                                                           
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.fft import rfft, rfftfreq, irfft, fft2, ifft2
+from numpy.fft import ifft2, fft2, fftshift
 import cmath
-from PIL import Image
-import matplotlib.pyplot as plt
 
 # load image as pixel array
-image1 = image.imread('photo1.jpeg')
-image2 = image.imread('photo2.jpeg')
+image1 = image.imread('photo1.jpeg', 0)
+image2 = image.imread('photo2.jpeg', 0)
 
-print("for image1: ")
-print(type(image1))
-print(image1.shape)
-print("for image2: ")
-print(type(image2))
-print(image2.shape)
+# FT of the first image
+f = fft2(image1)
 
-# getting fft of the signal and subtracting amplitudes and phases (1)
-rfft_coeff1 = rfft(image1)
-rfft_coeff2 = rfft(image2)
-signal_rfft_Coeff_abs1 = np.abs(rfft_coeff1)
-signal_rfft_Coeff_angle1 = np.angle(rfft_coeff1)
-signal_rfft_Coeff_real1 = np.real(rfft_coeff1)
-signal_rfft_Coeff_img1 = np.imag(rfft_coeff1)
+# shifting FT matrix
+fshift1 = fftshift(f)
 
+# getting phase and magnitude spectrums
+phase_spectrumA = np.angle(fshift1)
+magnitude_spectrumA = 20*np.log(np.abs(fshift1))
 
+# FT of the second image
+f2 = fft2(image2)
 
-#print(signal_rfft_Coeff_real1)
+# shifting FT matrix
+fshift2 = fftshift(f2)
 
-#print(signal_rfft_Coeff_abs1)
+# getting phase and magnitude spectrums
+phase_spectrumB = np.angle(fshift2)
+magnitude_spectrumB = 20*np.log(np.abs(fshift2))
 
-# getting fft of the signal and subtracting amplitudes and phases (2)
-signal_rfft_Coeff_abs2 = np.abs(rfft_coeff2)
-signal_rfft_Coeff_angle2 = np.angle(rfft_coeff2)
-signal_rfft_Coeff_real2 = np.real(rfft_coeff2)
-signal_rfft_Coeff_img2 = np.imag(rfft_coeff2)
-x,y,z=signal_rfft_Coeff_img2.shape
+# combining phase, magnitude spectrums into output image 
+# (YOU CAN EDIT HERE TO DECIDE WHAT TO COMBINE)
+combined = np.multiply(np.abs(f2), np.exp(1j*np.angle(f)))
 
-print(signal_rfft_Coeff_real2[10,3,1])
+# getting the real pixel values of the output image in the spatial domain
+imgCombined = np.real(ifft2(combined))
 
+# rescaling the image to 0's and 1's
+imgCombined = [ element/256 for element in imgCombined]
 
-#print(signal_rfft_Coeff_abs2)
-m=new_rfft_coeff1 =  np.zeros((x,y,z), dtype=complex)
-b=1j
-for i in range(x):
-    for g in range (y):
-        for k in range (z):
-            m[i,g,k]= signal_rfft_Coeff_real1[i,g,k] + b* signal_rfft_Coeff_img2[i,g,k] 
-
-
-# # # constructing fft coefficients again (from amplitudes and phases) after processing the amplitudes
-new_rfft_coeff1 =  np.zeros((x,y,z), dtype=complex)
-for i in range(x):
-    for g in range (y):
-        for k in range (z):
-            new_rfft_coeff1[i,g,k]= signal_rfft_Coeff_abs2[i,g,k]*cmath.exp(1j * signal_rfft_Coeff_angle2[i,g,k])
-   
-
-# # constructing the new signal from the fft coeffs by inverse fft
-print(irfft(rfft_coeff1) )
-new_image10 = Image.fromarray(irfft(rfft_coeff1), 'RGB')
-# # display the array of pixels as an image
-#pyplot.imshow(new_image1)
-#pyplot.show()
-
-#plt.imshow(new_image10.reshape(x, y, z))
-#print(type(newyf))
-#finalimage=irfft(rfft_coeff1)
-# display the array of pixels as an image
-#pyplot.imshow(new_image1)
-#pyplot.show()
-
-pyplot.imshow(new_image10.reshape(x,y,z))
-pyplot.show()
-
+plt.imshow(imgCombined)
+plt.show()
