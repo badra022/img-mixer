@@ -23,8 +23,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 # load image as pixel array
-image1 = image.imread('photo1.jpg')
-image2 = image.imread('photo2.jpg')
+image1 = image.imread('photo1.jpeg')
+image2 = image.imread('photo2.jpeg')
 
 print("for image1: ")
 print(type(image1))
@@ -58,7 +58,7 @@ print(signal_rfft_Coeff_real2[10,3,1])
 
 
 #print(signal_rfft_Coeff_abs2)
-m=rfft_coeff1
+m=new_rfft_coeff1 =  np.zeros((x,y,z), dtype=complex)
 b=1j
 for i in range(x):
     for g in range (y):
@@ -67,7 +67,7 @@ for i in range(x):
 
 
 # # # constructing fft coefficients again (from amplitudes and phases) after processing the amplitudes
-new_rfft_coeff1 = rfft_coeff1
+new_rfft_coeff1 =  np.zeros((x,y,z), dtype=complex)
 for i in range(x):
     for g in range (y):
         for k in range (z):
@@ -75,15 +75,19 @@ for i in range(x):
    
 
 # # constructing the new signal from the fft coeffs by inverse fft
+print(irfft(rfft_coeff1) )
 new_image10 = Image.fromarray(irfft(rfft_coeff1), 'RGB')
 # # display the array of pixels as an image
 #pyplot.imshow(new_image1)
 #pyplot.show()
-#print()
-plt.imshow(new_image10)
+
+#plt.imshow(new_image10.reshape(x, y, z))
 #print(type(newyf))
 #finalimage=irfft(rfft_coeff1)
 # display the array of pixels as an image
 #pyplot.imshow(new_image1)
+#pyplot.show()
+
+pyplot.imshow(new_image10.reshape(x,y,z))
 pyplot.show()
 
