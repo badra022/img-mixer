@@ -5,8 +5,8 @@ from numpy.fft import ifft2, fft2, fftshift
 import cmath
 
 # load image as pixel array
-image1 = image.imread('photo1.jpeg', 0)
-image2 = image.imread('photo2.jpeg', 0)
+image1 = image.imread('images/photo1.jpeg', 0)
+image2 = image.imread('images/photo2.jpeg', 0)
 
 # FT of the first image
 photo1 = fft2(image1)
