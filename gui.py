@@ -9,8 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
-
+from PyQt5.QtGui import QKeySequence
+    
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -290,8 +290,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionopen = QtWidgets.QAction(MainWindow)
         self.actionopen.setObjectName("actionopen")
+        self.actionopen.setShortcut(QKeySequence("Ctrl+Shift+N"))
         self.actionnew_window = QtWidgets.QAction(MainWindow)
         self.actionnew_window.setObjectName("actionnew_window")
+        self.actionnew_window.setShortcut(QKeySequence("Ctrl+Shift+R"))
         self.menufile.addAction(self.actionopen)
         self.menufile.addAction(self.actionnew_window)
         self.menubar.addAction(self.menufile.menuAction())

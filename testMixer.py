@@ -16,7 +16,7 @@ fshift1 = fftshift(photo1)
 
 # getting phase and magnitude spectrums
 phase_spectrumA = np.angle(fshift1)
-magnitude_spectrumA = 20*np.log(np.abs(fshift1))
+magnitude_spectrumA = np.abs(fshift1)
 
 # FT of the second image
 photo2 = fft2(image2)
