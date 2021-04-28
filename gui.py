@@ -10,7 +10,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QKeySequence
-    
+from classes import component
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -187,6 +188,9 @@ class Ui_MainWindow(object):
         self.component1_slider_ratio = QtWidgets.QSlider(self.component1)
         self.component1_slider_ratio.setOrientation(QtCore.Qt.Horizontal)
         self.component1_slider_ratio.setObjectName("component1_slider_ratio")
+        self.component1_slider_ratio.setMinimum(0)
+        self.component1_slider_ratio.setMaximum(100)
+        self.component1_slider_ratio.setSliderPosition(100)
         self.verticalLayout_6.addWidget(self.component1_slider_ratio)
         self.verticalLayout_7.addLayout(self.verticalLayout_6)
         self.verticalLayout_10.addWidget(self.component1)
@@ -213,6 +217,9 @@ class Ui_MainWindow(object):
         self.component2_slider_ratio = QtWidgets.QSlider(self.component2)
         self.component2_slider_ratio.setOrientation(QtCore.Qt.Horizontal)
         self.component2_slider_ratio.setObjectName("component2_slider_ratio")
+        self.component2_slider_ratio.setMinimum(0)
+        self.component2_slider_ratio.setMaximum(100)
+        self.component2_slider_ratio.setSliderPosition(100)
         self.verticalLayout_8.addWidget(self.component2_slider_ratio)
         self.verticalLayout_10.addWidget(self.component2)
         self.verticalLayout_11.addLayout(self.verticalLayout_10)
@@ -297,7 +304,13 @@ class Ui_MainWindow(object):
         self.menufile.addAction(self.actionopen)
         self.menufile.addAction(self.actionnew_window)
         self.menubar.addAction(self.menufile.menuAction())
-
+        component1 = component(img_selector = self.component1_img_selector ,
+                               component_selector = self.component1_component_selector,
+                               ratio = self.component1_slider_ratio)
+        component2 = component(img_selector = self.component2_img_selector ,
+                        component_selector = self.component2_component_selector,
+                        ratio = self.component2_slider_ratio)
+                           
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
