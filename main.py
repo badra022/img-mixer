@@ -16,7 +16,7 @@ import sys
 from gui import Ui_MainWindow
 import os
 import pathlib
-from classes import image, Mixer
+from classes import image
 
 imgComponents = ['amplitude', 'phase', 'real', 'imaginary']
 mixerComponents = ['amplitude', 'phase', 'real', 'imaginary', 'unity_amplitude', 'zero_phase']
@@ -39,11 +39,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             for component in imgComponents:
                 widget[2].addItem(component)
 
-        self.ui.component1_component_selector.addItem([component for component in mixerComponents])
-        self.ui.component2_component_selector.addItem([component for component in mixerComponents])
-        self.ui.component1_img_selector.addItem([img for img in self.images.keys()])
-        self.ui.component2_img_selector.addItem([img for img in self.images.keys()])
-        self.ui.output_selector.addItem([output for output in outputs])
+        # self.ui.component1_component_selector.addItem([component for component in mixerComponents])
+        # self.ui.component2_component_selector.addItem([component for component in mixerComponents])
+        # self.ui.component1_img_selector.addItem([img for img in self.images.keys()])
+        # self.ui.component2_img_selector.addItem([img for img in self.images.keys()])
+        # self.ui.output_selector.addItem([output for output in outputs])
 
         self.ui.actionopen.triggered.connect(self.open)
         self.ui.actionnew_window.triggered.connect(child_window)
@@ -64,13 +64,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                              path))
                     self.imgWidgets.pop(0)
                     idx = idx + 1
-            if not self.imgWidgets:
-                self.mixer = Mixer( output1 = self.ui.output1_display,
-                                    output2 = self.ui.output2_display,
-                                    component1 = self.ui.component1,
-                                    component2 = self.ui.component2,
-                                    img1 = self.images[0],
-                                    img2 = self.images[1])
+            # if not self.imgWidgets:
+            #     self.mixer = Mixer( output1 = self.ui.output1_display,
+            #                         output2 = self.ui.output2_display,
+            #                         component1 = self.ui.component1,
+            #                         component2 = self.ui.component2,
+            #                         img1 = self.images[0],
+            #                         img2 = self.images[1])
 
 def child_window():
     win = ApplicationWindow()

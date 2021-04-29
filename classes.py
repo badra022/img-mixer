@@ -56,14 +56,14 @@ class component(object):
         self.component_selector = component_selector
 
 
-class Mixer(object):
-    def __init__(self, output1, output2, component1, component2, img1, img2):
-        self.output1 = output1
-        self.output2 = output2
-        self.component1 = component1
-        self.component2 = component2
-        self.img1 = img1
-        self.img2 = img2
+# class Mixer(object):
+#     def __init__(self, output1, output2, component1, component2, img1, img2):
+#         self.output1 = output1
+#         self.output2 = output2
+#         self.component1 = component1
+#         self.component2 = component2
+#         self.img1 = img1
+#         self.img2 = img2
     
-    def updateOutput(self):
+#     def updateOutput(self):
         
