@@ -30,10 +30,10 @@ def toQImage(im, copy=False):
                 return qim.copy() if copy else qim
 
 class image(object):
-    def __init__(self, inputImg, outputImg, outputSelector, imagePath):
-        self.inputImg = inputImg
-        self.outputImg = outputImg
-        self.outputSelector = outputSelector
+    def __init__(self, imgWidgets, imagePath):
+        self.inputImg = imgWidgets[0]
+        self.outputImg = imgWidgets[1]
+        self.outputSelector = imgWidgets[2]
         self.imagePath = imagePath
         image = img.imread(imagePath, 0)
         fourier_coefficients = fft2(image)
@@ -43,6 +43,8 @@ class image(object):
         self.components['phase'] = np.angle(fshift) 
         self.components['real'] = np.real(fshift)
         self.components['imaginary'] = np.imag(fshift)
+        self.components['unity Amplitude'] = np.array([1 for element in fourier_coefficients])
+        self.components['zero Phase'] = np.array([0 for element in fourier_coefficients])
         self.display()
 
     def display(self):
@@ -55,13 +57,37 @@ class component(object):
         self.img_selector = img_selector
         self.component_selector = component_selector
 
+def mix(amplitude = None, phase = None, real = None, imaginary = None):
+    if amlitude is not None and phase is not None:
+        return np.real(ifft2(np.multiply(amplitude, np.exp(1j*phase))))
+    elif real is not None and imaginary is not None:
+        return np.real(ifft2(np.add(real, 1j * imaginary)))
 
-# class Mixer(object):
-#     def __init__(self, output1, output2, component1, component2, img1, img2):
-#         self.output1 = output1
-#         self.output2 = output2
-#         self.component1 = component1
-#         self.component2 = component2
-#         self.img1 = img1
-#         self.img2 = img2
+class Mixer(object):
+    def __init__(self, outputs, component1, component2, images, outputSelector):
+        self.outputs = outputs
+        self.component1 = component1
+        self.component2 = component2
+        self.images = images
+        self.outputSelector = outputSelector
+
+    def display(self):
+        self.combinedImg = None
+        if self.component1.component_selector.currentText() == 'amplitude':
+            self.combinedImg = mix(amplitude= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
+                                   phase= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()])
+        elif self.component1.component_selector.currentText() == 'phase':
+            self.combinedImg = mix(phase= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
+                                   amplitude= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()])
+        elif self.component1.component_selector.currentText() == 'real':
+            self.combinedImg = mix(real= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
+                                   imaginary= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()])
+        elif self.component1.component_selector.currentText() == 'imaginary':
+            self.combinedImg = mix(real= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
+                                   imaginary= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()])
+
+        if self.combinedImg is not None:
+            self.outputs[self.outputSelector.currentText()].setPixmap(QtGui.QPixmap(toQImage(self.combinedImg)))
+        else:
+            print("there's an error in displaying the combined image!")
     
