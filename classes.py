@@ -65,5 +65,3 @@ class component(object):
 #         self.img1 = img1
 #         self.img2 = img2
     
-#     def updateOutput(self):
-        
