@@ -304,12 +304,7 @@ class Ui_MainWindow(object):
         self.menufile.addAction(self.actionopen)
         self.menufile.addAction(self.actionnew_window)
         self.menubar.addAction(self.menufile.menuAction())
-        component1 = component(img_selector = self.component1_img_selector ,
-                               component_selector = self.component1_component_selector,
-                               ratio = self.component1_slider_ratio)
-        component2 = component(img_selector = self.component2_img_selector ,
-                        component_selector = self.component2_component_selector,
-                        ratio = self.component2_slider_ratio)
+
                            
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

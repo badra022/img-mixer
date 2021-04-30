@@ -58,7 +58,7 @@ class component(object):
         self.component_selector = component_selector
 
 def mix(amplitude = None, phase = None, real = None, imaginary = None):
-    if amlitude is not None and phase is not None:
+    if amplitude is not None and phase is not None:
         return np.real(ifft2(np.multiply(amplitude, np.exp(1j*phase))))
     elif real is not None and imaginary is not None:
         return np.real(ifft2(np.add(real, 1j * imaginary)))
@@ -70,6 +70,7 @@ class Mixer(object):
         self.component2 = component2
         self.images = images
         self.outputSelector = outputSelector
+        self.display()
 
     def display(self):
         self.combinedImg = None
