@@ -5,7 +5,6 @@ import numpy as np
 from matplotlib import image as img
 import numpy as np
 from numpy.fft import ifft2, fft2, fftshift
-import cmath
 from PyQt5.QtGui import QImage, QPixmap, qRgb
 
 gray_color_table = [qRgb(i, i, i) for i in range(256)]
@@ -37,12 +36,12 @@ class image(object):
         self.imagePath = imagePath
         image = img.imread(imagePath, 0)
         fourier_coefficients = fft2(image)
-        fshift = fftshift(fourier_coefficients)
+        # fshift = fftshift(fourier_coefficients)
         self.components = {}
-        self.components['amplitude'] = np.abs(fshift)
-        self.components['phase'] = np.angle(fshift) 
-        self.components['real'] = np.real(fshift)
-        self.components['imaginary'] = np.imag(fshift)
+        self.components['amplitude'] = np.abs(fourier_coefficients)
+        self.components['phase'] = np.angle(fourier_coefficients) 
+        self.components['real'] = np.real(fourier_coefficients)
+        self.components['imaginary'] = np.imag(fourier_coefficients)
         self.components['unity Amplitude'] = np.array([1 for element in fourier_coefficients])
         self.components['zero Phase'] = np.array([0 for element in fourier_coefficients])
         self.display()
