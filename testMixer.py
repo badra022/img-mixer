@@ -79,12 +79,12 @@ def join_real_imag(make4,real,ima,ratio4):
 
     return l
 
-combined1=mix_amb_ang(photo1,photo1,photo1,1)
+#combined1=mix_amb_ang(photo2,photo1,photo2,.5)
 #combined2 = make_amb1 (photo1,photo1,.5) 
 #combined3=make_phase0(photo2,photo2,.5) 
-#combined4= join_real_imag (photo1,photo1,photo2,.5)
+combined4= join_real_imag (photo1,photo1,photo2,.5)
 # getting the real pixel values of the output image in the spatial domain
-imgCombined = np.real(ifft2(combined1))
+imgCombined = np.real(ifft2(combined4))
 
 # rescaling the image to 0's and 1's
 imgCombined = [ element/256 for element in imgCombined]
