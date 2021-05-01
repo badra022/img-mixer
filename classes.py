@@ -32,12 +32,20 @@ def toQImage(im, copy=False):
                 return qim.copy() if copy else qim
 
 class image(object):
+    shape = None
     def __init__(self, imgWidgets, imagePath):
+        image = img.imread(imagePath, 0)
+        if self.__class__.shape is not None:
+            if not self.__class__.shape == image.shape:
+                error_dialog = QtWidgets.QErrorMessage()
+                error_dialog.showMessage('two images must be same size!')
+                return False
+        self.__class__.shape = image.shape
         self.inputImg = imgWidgets[0]
         self.outputImg = imgWidgets[1]
         self.outputSelector = imgWidgets[2]
         self.imagePath = imagePath
-        image = img.imread(imagePath, 0)
+
         fourier_coefficients = fft2(image)
         # fshift = fftshift(fourier_coefficients)
         self.components = {}

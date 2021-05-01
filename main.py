@@ -61,6 +61,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             for path in files_names:
                 if pathlib.Path(path).suffix == ".jpeg":
                     self.images['image ' + str(self.idx + 1)] = image(self.imgWidgets[0] , path)
+                    if self.images['image ' + str(self.idx + 1)] == False:
+                        return
                     self.imgWidgets.pop(0)
                     self.idx = self.idx + 1
             if not self.imgWidgets:
