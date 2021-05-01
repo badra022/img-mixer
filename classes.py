@@ -53,8 +53,14 @@ class image(object):
         self.components['phase'] = np.angle(fourier_coefficients) 
         self.components['real'] = np.real(fourier_coefficients)
         self.components['imaginary'] = np.imag(fourier_coefficients)
-        self.components['unity Amplitude'] = np.array([1 for element in fourier_coefficients])
-        self.components['zero Phase'] = np.array([0 for element in fourier_coefficients])
+        self.components['unity Amplitude'] = np.abs(fourier_coefficients)
+        self.components['zero Phase'] = np.abs(fourier_coefficients)
+        for i in range(self.__class__.shape[0]):
+            for j in range(self.__class__.shape[1]):
+                for k in range(self.__class__.shape[2]):
+                    self.components['unity Amplitude'][i, j, k] = 1
+                    self.components['zero Phase'][i, j, k] = 0
+
         self.display()
 
     def display(self):
@@ -88,10 +94,10 @@ class Mixer(object):
 
     def display(self):
         self.combinedImg = None
-        if self.component1.component_selector.currentText() == 'amplitude':
+        if self.component1.component_selector.currentText() == 'amplitude' or self.component1.component_selector.currentText() == 'unity Amplitude':
             self.combinedImg = mix(amplitude= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
                                    phase= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()])
-        elif self.component1.component_selector.currentText() == 'phase':
+        elif self.component1.component_selector.currentText() == 'phase' or self.component1.component_selector.currentText() == 'zero Phase':
             self.combinedImg = mix(phase= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
                                    amplitude= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()])
         elif self.component1.component_selector.currentText() == 'real':
