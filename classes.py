@@ -7,6 +7,9 @@ import numpy as np
 from numpy.fft import ifft2, fft2, fftshift
 from PyQt5.QtGui import QImage, QPixmap, qRgb
 
+mixerComponents = ['amplitude', 'phase', 'real', 'imaginary', 'unity Amplitude', 'zero Phase']
+imgs = ['image 1', 'image 2']
+
 gray_color_table = [qRgb(i, i, i) for i in range(256)]
 
 def toQImage(im, copy=False):
@@ -51,10 +54,14 @@ class image(object):
         self.outputImg.setPixmap(QtGui.QPixmap(toQImage(self.components[self.outputSelector.currentText()])))
 
 class component(object):
-    def __init__(self, img_selector, component_selector, ratio):
+    def __init__(self, img_selector, component_selector, ratio, slotFunction):
         self.ratio = ratio
         self.img_selector = img_selector
         self.component_selector = component_selector
+        self.img_selector.activated.connect(slotFunction)
+        self.component_selector.activated.connect(slotFunction)
+        self.component_selector.addItems([component for component in mixerComponents])
+        self.img_selector.addItems([img for img in imgs])
 
 def mix(amplitude = None, phase = None, real = None, imaginary = None):
     if amplitude is not None and phase is not None:

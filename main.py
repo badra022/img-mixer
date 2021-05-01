@@ -19,9 +19,7 @@ import pathlib
 from classes import image, Mixer, component
 
 imgComponents = ['amplitude', 'phase', 'real', 'imaginary']
-mixerComponents = ['amplitude', 'phase', 'real', 'imaginary', 'unity Amplitude', 'zero Phase']
 outputs = ['output 1', 'output 2']
-imgs = ['image 1', 'image 2']
 
 # class definition for application window components like the ui
 class ApplicationWindow(QtWidgets.QMainWindow):
@@ -34,32 +32,21 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.imgWidgets.append([self.ui.img2, self.ui.img2_component_display, self.ui.img2_display_selector])
         self.component1 = component(img_selector = self.ui.component1_img_selector ,
                                component_selector = self.ui.component1_component_selector,
-                               ratio = self.ui.component1_slider_ratio)
+                               ratio = self.ui.component1_slider_ratio, slotFunction = self.updateOutputDisplay)
         self.component2 = component(img_selector = self.ui.component2_img_selector ,
                         component_selector = self.ui.component2_component_selector,
-                        ratio = self.ui.component2_slider_ratio)
+                        ratio = self.ui.component2_slider_ratio, slotFunction = self.updateOutputDisplay)
         self.outputs = {'output 1': self.ui.output1_display, 'output 2': self.ui.output2_display}
         self.images = {}
 
-        self.component1.img_selector.activated.connect(self.updateOutputDisplay)
-        self.component2.img_selector.activated.connect(self.updateOutputDisplay)
-        self.component1.component_selector.activated.connect(self.updateOutputDisplay)
-        self.component2.component_selector.activated.connect(self.updateOutputDisplay)
         self.ui.output_selector.activated.connect(self.updateOutputDisplay)
         for widget in self.imgWidgets:
             widget[2].activated.connect(self.updateComponentDisplay)
             widget[2].addItems([component for component in imgComponents])
                
-
-        self.ui.component1_component_selector.addItems([component for component in mixerComponents])
-        self.ui.component2_component_selector.addItems([component for component in mixerComponents])
-        self.ui.component1_img_selector.addItems([img for img in imgs])
-        self.ui.component2_img_selector.addItems([img for img in imgs])
         self.ui.output_selector.addItems([output for output in outputs])
-
         self.ui.actionopen.triggered.connect(self.open)
-        self.ui.actionnew_window.triggered.connect(child_window)
-        # self.images = []
+        self.ui.actionnew_window.triggered.connect(self.child_window)
         self.idx = 0 
 
     def updateComponentDisplay(self):
@@ -83,9 +70,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                     images = self.images,
                                     outputSelector = self.ui.output_selector)
 
-def child_window():
-    win = ApplicationWindow()
-    win.show()
+    def child_window(self):
+        self.child = ApplicationWindow()
+        self.child.show()
 
 # function for launching a QApplication and running the ui and main window
 def window():
