@@ -83,14 +83,14 @@ def mix(amplitude = None, phase = None, real = None, imaginary = None
     if amplitude is not None and phase is not None:
         limitIdx1 = int((len(amplitude) - 1) * (ratio1/100))
         limitIdx2 = int((len(phase) - 1) * (ratio2/100))
-        amplitude = np.append(amplitude[:limitIdx1, :, :], refAmplitude[limitIdx1 + 1:, :, :], 0)
-        phase = np.append(phase[:limitIdx2, :, :], refPhase[limitIdx2 + 1:, :, :], 0)
+        amplitude = np.append(amplitude[:limitIdx1, :, :], refAmplitude[limitIdx1 :, :, :], 0)
+        phase = np.append(phase[:limitIdx2, :, :], refPhase[limitIdx2 :, :, :], 0)
         return np.real(ifft2(np.multiply(amplitude, np.exp(1j*phase))))
     elif real is not None and imaginary is not None:
         limitIdx1 = int((len(real) - 1) * (ratio1/100))
         limitIdx2 = int((len(imaginary) - 1) * (ratio2/100))
-        real = np.append(real[:limitIdx1, :, :], refReal[limitIdx1 + 1:, :, :], 0)
-        imaginary = np.append(imaginary[:limitIdx2, :, :], refImaginary[limitIdx2 + 1:, :, :], 0)
+        real = np.append(real[:limitIdx1, :, :], refReal[limitIdx1 :, :, :], 0)
+        imaginary = np.append(imaginary[:limitIdx2, :, :], refImaginary[limitIdx2 :, :, :], 0)
         return np.real(ifft2(np.add(real, 1j * imaginary)))
 
 class Mixer(object):
