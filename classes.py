@@ -1,12 +1,14 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets
 import pyqtgraph as pg
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import image as img
-import numpy as np
-from numpy.fft import ifft2, fft2, fftshift
+from numpy.fft import ifft2, fft2
 from PyQt5.QtGui import QImage, QPixmap, qRgb
+import logging
 
+
+logging.basicConfig(filename = 'test.log', level = logging.DEBUG, format = '%(levelname)s:%(message)s')
 mixerComponents = ['amplitude', 'phase', 'real', 'imaginary', 'unity Amplitude', 'zero Phase']
 imgs = ['image 1', 'image 2']
 
@@ -47,7 +49,6 @@ class image(object):
         self.imagePath = imagePath
 
         fourier_coefficients = fft2(image)
-        # fshift = fftshift(fourier_coefficients)
         self.components = {}
         self.components['amplitude'] = np.abs(fourier_coefficients)
         self.components['phase'] = np.angle(fourier_coefficients) 
@@ -100,41 +101,62 @@ class Mixer(object):
         self.component2 = component2
         self.images = images
         self.outputSelector = outputSelector
+        self.component2.component_selector.setCurrentText('phase')
         self.display()
 
     def display(self):
         self.combinedImg = None
-        if self.component1.component_selector.currentText() == 'amplitude' or self.component1.component_selector.currentText() == 'unity Amplitude':
+        if (self.component1.component_selector.currentText() == 'amplitude' or self.component1.component_selector.currentText() == 'unity Amplitude')\
+        and (self.component2.component_selector.currentText() == 'phase' or self.component2.component_selector.currentText() == 'zero Phase'):
             self.combinedImg = mix(amplitude= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
                                    phase= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()],
                                    refAmplitude = self.images[self.component2.img_selector.currentText()].components[self.component1.component_selector.currentText()],
                                    refPhase = self.images[self.component1.img_selector.currentText()].components[self.component2.component_selector.currentText()],
                                    ratio1 = self.component1.ratio.value(),
                                    ratio2 = self.component2.ratio.value())
-        elif self.component1.component_selector.currentText() == 'phase' or self.component1.component_selector.currentText() == 'zero Phase':
+        elif (self.component1.component_selector.currentText() == 'phase' or self.component1.component_selector.currentText() == 'zero Phase')\
+            and (self.component2.component_selector.currentText() == 'amplitude' or self.component2.component_selector.currentText() == 'unity Amplitude'):
             self.combinedImg = mix(phase= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
                                    amplitude= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()],
                                    refAmplitude = self.images[self.component1.img_selector.currentText()].components[self.component2.component_selector.currentText()],
                                    refPhase = self.images[self.component2.img_selector.currentText()].components[self.component1.component_selector.currentText()],
                                    ratio1 = self.component2.ratio.value(),
                                    ratio2 = self.component1.ratio.value())
-        elif self.component1.component_selector.currentText() == 'real':
+        elif self.component1.component_selector.currentText() == 'real' and self.component2.component_selector.currentText() == 'imaginary':
             self.combinedImg = mix(real= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
                                    imaginary= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()],
                                    refReal = self.images[self.component2.img_selector.currentText()].components[self.component1.component_selector.currentText()],
                                    refImaginary = self.images[self.component1.img_selector.currentText()].components[self.component2.component_selector.currentText()],
                                    ratio1 = self.component1.ratio.value(),
                                    ratio2 = self.component2.ratio.value())
-        elif self.component1.component_selector.currentText() == 'imaginary':
-            self.combinedImg = mix(real= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
-                                   imaginary= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()],
-                                   refReal = self.images[self.component2.img_selector.currentText()].components[self.component1.component_selector.currentText()],
-                                   refImaginary = self.images[self.component1.img_selector.currentText()].components[self.component2.component_selector.currentText()],
+        elif self.component1.component_selector.currentText() == 'imaginary' and self.component2.component_selector.currentText() == 'real':
+            self.combinedImg = mix(imaginary= self.images[self.component1.img_selector.currentText()].components[self.component1.component_selector.currentText()],
+                                   real= self.images[self.component2.img_selector.currentText()].components[self.component2.component_selector.currentText()],
+                                   refImaginary = self.images[self.component2.img_selector.currentText()].components[self.component1.component_selector.currentText()],
+                                   refReal = self.images[self.component1.img_selector.currentText()].components[self.component2.component_selector.currentText()],
                                    ratio1 = self.component2.ratio.value(),
                                    ratio2 = self.component1.ratio.value())
 
         if self.combinedImg is not None:
             self.outputs[self.outputSelector.currentText()].setPixmap(QtGui.QPixmap(toQImage(self.combinedImg)))
         else:
-            print("there's an error in displaying the combined image!")
-    
+            if self.component1.component_selector.currentText() == 'amplitude':
+                self.component2.component_selector.setCurrentText('phase')
+            if self.component1.component_selector.currentText() == 'phase':
+                self.component2.component_selector.setCurrentText('amplitude')
+            if self.component1.component_selector.currentText() == 'real':
+                self.component2.component_selector.setCurrentText('imaginary')
+            if self.component1.component_selector.currentText() == 'imaginary':
+                self.component2.component_selector.setCurrentText('real')
+            if self.component1.component_selector.currentText() == 'unity Amplitude':
+                self.component2.component_selector.setCurrentText('phase')
+            if self.component1.component_selector.currentText() == 'zero Phase':
+                self.component2.component_selector.setCurrentText('amplitude')
+            # print("there's an error in displaying the combined image!")
+            msg = QtGui.QMessageBox()
+            msg.setIcon(QtGui.QMessageBox.Warning)
+            msg.setText("Not Compatible Components to Mix!")
+            msg.setWindowTitle("Warning")
+            msg.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+            msg.exec_()
+            self.display()
