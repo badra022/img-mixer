@@ -17,7 +17,9 @@ from gui import Ui_MainWindow
 import os
 import pathlib
 from classes import image, Mixer, component
+import logging
 
+logging.basicConfig(filename = 'application.log', level = logging.DEBUG, format = '%(message)s')
 imgComponents = ['amplitude', 'phase', 'real', 'imaginary']
 outputs = ['output 1', 'output 2']
 
@@ -25,11 +27,13 @@ outputs = ['output 1', 'output 2']
 class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(ApplicationWindow, self).__init__()
+        logging.debug("============START==============") # To separate different messages of different Runs
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.imgWidgets = []
         self.imgWidgets.append([self.ui.img1, self.ui.img1_component_display, self.ui.img1_display_selector])
         self.imgWidgets.append([self.ui.img2, self.ui.img2_component_display, self.ui.img2_display_selector])
+        logging.debug("the two image layouts are empty!") # for indicating the start of the imgWidgets list
         self.component1 = component(img_selector = self.ui.component1_img_selector ,
                                component_selector = self.ui.component1_component_selector,
                                ratio = self.ui.component1_slider_ratio, slotFunction = self.updateOutputDisplay)
@@ -43,11 +47,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         for widget in self.imgWidgets:
             widget[2].activated.connect(self.updateComponentDisplay)
             widget[2].addItems([component for component in imgComponents])
-               
+
         self.ui.output_selector.addItems([output for output in outputs])
         self.ui.actionopen.triggered.connect(self.open)
         self.ui.actionnew_window.triggered.connect(self.child_window)
-        self.idx = 0 
+        self.idx = 0
 
     def updateComponentDisplay(self):
         for image in self.images.values():
@@ -62,10 +66,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 if pathlib.Path(path).suffix == ".jpeg":
                     self.images['image ' + str(self.idx + 1)] = image(self.imgWidgets[0] , path)
                     if self.images['image ' + str(self.idx + 1)] == False:
+                        logging.debug("inserted image {} is rejected as it's different size!")
+                        logging.debug("remaining {}".format(self.idx + 1))
                         return
+                    logging.debug("inserted image {} as image 1".format(path))
+                    logging.debug("remaining {}".format(2 - self.idx))
                     self.imgWidgets.pop(0)
                     self.idx = self.idx + 1
-            if not self.imgWidgets:
+            if not self.imgWidgets: # if both imgLayouts are filled with images then create Mixer object and start mixing
                 self.mixer = Mixer( outputs = self.outputs,
                                     component1 = self.component1,
                                     component2 = self.component2,

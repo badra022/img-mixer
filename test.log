@@ -1,0 +1,81 @@
+DEBUG:previous items: 
+DEBUG:previous items: 
+DEBUG:amplitude, 
+DEBUG:phase, 
+DEBUG:real, 
+DEBUG:imaginary, 
+DEBUG:unity Amplitude, 
+DEBUG:zero Phase, 
+DEBUG:
+ new Items: 
+DEBUG:phase, 
+DEBUG:zero Phase, 
+DEBUG:previous items: 
+DEBUG:amplitude, 
+DEBUG:phase, 
+DEBUG:real, 
+DEBUG:imaginary, 
+DEBUG:unity Amplitude, 
+DEBUG:zero Phase, 
+DEBUG:new Items: 
+DEBUG:phase, 
+DEBUG:zero Phase, 
+DEBUG:previous items: 
+DEBUG:phase, 
+DEBUG:zero Phase, 
+DEBUG:new Items: 
+DEBUG:amplitude, 
+DEBUG:unity Amplitude, 
+DEBUG:previous items: 
+DEBUG:amplitude, 
+DEBUG:phase, 
+DEBUG:real, 
+DEBUG:imaginary, 
+DEBUG:unity Amplitude, 
+DEBUG:zero Phase, 
+DEBUG:new Items: 
+DEBUG:phase, 
+DEBUG:zero Phase, 
+DEBUG:previous items: 
+DEBUG:phase, 
+DEBUG:zero Phase, 
+DEBUG:new Items: 
+DEBUG:imaginary, 
+DEBUG:============START==============
+DEBUG:the two image layouts are empty!
+DEBUG:inserted image D:/img-mixer/images/photo1.jpeg as image 1
+DEBUG:remaining 1
+DEBUG:inserted image D:/img-mixer/images/photo2.jpeg as image 1
+DEBUG:remaining 2
+DEBUG:previous items: 
+DEBUG:amplitude, 
+DEBUG:phase, 
+DEBUG:real, 
+DEBUG:imaginary, 
+DEBUG:unity Amplitude, 
+DEBUG:zero Phase, 
+DEBUG:new Items: 
+DEBUG:phase, 
+DEBUG:zero Phase, 
+DEBUG:previous items: 
+DEBUG:phase, 
+DEBUG:zero Phase, 
+DEBUG:new Items: 
+DEBUG:amplitude, 
+DEBUG:unity Amplitude, 
+DEBUG:previous items: 
+DEBUG:amplitude, 
+DEBUG:unity Amplitude, 
+DEBUG:new Items: 
+DEBUG:imaginary, 
+DEBUG:previous items: 
+DEBUG:imaginary, 
+DEBUG:new Items: 
+DEBUG:phase, 
+DEBUG:zero Phase, 
+DEBUG:previous items: 
+DEBUG:phase, 
+DEBUG:zero Phase, 
+DEBUG:new Items: 
+DEBUG:amplitude, 
+DEBUG:unity Amplitude, 
