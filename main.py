@@ -19,7 +19,7 @@ import pathlib
 from classes import image, Mixer, component
 import logging
 
-logging.basicConfig(filename = 'application.log', level = logging.DEBUG, format = '%(message)s')
+logging.basicConfig(filename = 'test.log', level = logging.DEBUG, format = '%(message)s')
 imgComponents = ['amplitude', 'phase', 'real', 'imaginary']
 outputs = ['output 1', 'output 2']
 
@@ -65,12 +65,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             for path in files_names:
                 if pathlib.Path(path).suffix == ".jpeg":
                     self.images['image ' + str(self.idx + 1)] = image(self.imgWidgets[0] , path)
-                    if self.images['image ' + str(self.idx + 1)] == False:
-                        logging.debug("inserted image {} is rejected as it's different size!")
-                        logging.debug("remaining {}".format(self.idx + 1))
+                    if self.images['image ' + str(self.idx + 1)] is None:
+                        logging.debug("didn't proceed in inserting the image!")
+                        logging.debug("remaining {}".format(1 - self.idx))
                         return
-                    logging.debug("inserted image {} as image 1".format(path))
-                    logging.debug("remaining {}".format(2 - self.idx))
+                    logging.debug("inserted image {} as image 1".format(path)) # indicating success
+                    logging.debug("remaining {}".format(1 - self.idx))
                     self.imgWidgets.pop(0)
                     self.idx = self.idx + 1
             if not self.imgWidgets: # if both imgLayouts are filled with images then create Mixer object and start mixing

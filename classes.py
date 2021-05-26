@@ -41,7 +41,7 @@ class image(object):
             if not self.__class__.shape == image.shape:
                 error_dialog = QtWidgets.QErrorMessage()
                 error_dialog.showMessage('two images must be same size!')
-                return False
+                self.__del__()
         self.__class__.shape = image.shape
         self.inputImg = imgWidgets[0]
         self.outputImg = imgWidgets[1]
